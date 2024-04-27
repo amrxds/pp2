@@ -1,0 +1,35 @@
+CSV -  Comma separated values
+file format where each line represents one row and each Comma
+separates one column
+
+Timur,23BD2023,1,324242
+
+
+import csv
+
+filename = 'students.csv'
+
+with open(filename, "r") as csvfile:
+    csvreader = csv.reader(csvfile, delimiter=',') - разделитель
+    for row in csvreader:
+        # print(row) # ['Ruslan', '24B202424', '1', '+77007007070']
+                     # ['Mariya', '24B202425', '1', '+77077077070']
+        name, id, study_year, phone_number = row
+        # print(name, id, study_year, phone_number) # Ruslan 24B202424 1 +77007007070
+                                                    # Mariya 24B202425 1 +77077077070
+
+
+
+# Create new students
+        cur.execute(f"""INSERT INTO students_data (name, id, study_year, phone_number) VALUES 
+                    ('{name}', '{id}', {study_year}, '{phone_number}');
+        """)
+
+
+
+
+# Get students
+cur.execute('SELECT name, id, phone_number, study_year FROM students_data')
+
+print(cur.fetchall())
+print(cur.fetchall())

@@ -1,0 +1,57 @@
+import psycopg2
+from config import load_config
+
+def delete_data_by_username(username_to_delete):
+    conn = None
+
+    try:
+        config = load_config()
+        conn = psycopg2.connect(**config)
+        cursor = conn.cursor()
+
+        # Удаление данных для заданного пользователя
+        cursor.execute("DELETE FROM PhoneBook WHERE username = %s", (username_to_delete,))
+        conn.commit()
+        print("Data deleted successfully.")
+
+    except (psycopg2.DatabaseError, Exception) as error:
+        print(error)
+
+    finally:
+        if conn:
+            cursor.close()
+            conn.close()
+            print("Database connection closed.")
+
+def delete_data_by_phone(phone_to_delete):
+    conn = None
+
+    try:
+        config = load_config()
+        conn = psycopg2.connect(**config)
+        cursor = conn.cursor()
+
+        # Удаление данных для заданного номера телефона
+        cursor.execute("DELETE FROM PhoneBook WHERE phone_number = %s", (phone_to_delete,))
+        conn.commit()
+        print("Data deleted successfully.")
+
+    except (psycopg2.DatabaseError, Exception) as error:
+        print(error)
+
+    finally:
+        if conn:
+            cursor.close()
+            conn.close()
+            print("Database connection closed.")
+
+if __name__ == '__main__':
+    delete_option = input("Delete by username or phone? (username/phone): ").lower()
+    if delete_option == "username":
+        username_to_delete = input("Enter username to delete: ")
+        delete_data_by_username(username_to_delete)
+    elif delete_option == "phone":
+        phone_to_delete = input("Enter phone number to delete: ")
+        delete_data_by_phone(phone_to_delete)
+    else:
+        print("Invalid option.")
